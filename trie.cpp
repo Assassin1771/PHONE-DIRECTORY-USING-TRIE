@@ -20,7 +20,7 @@ public:
     friend class phone_details;
 };
 
-class Node // the unordered map to store the names using Node concept
+class Node
 {
     unordered_map<char, Node *> child;
     bool isLast;
@@ -38,7 +38,7 @@ public:
 
 class phone_details
 {
-    info arr[100]; // maximum size of the infoory is 100
+    info arr[100];
     string n;
     string t;
     string e;
@@ -229,7 +229,7 @@ public:
         cout << endl;
     }
 
-    void delete_rec(int size) // deletes the record whose id is entered by the user
+    void delete_rec(int size)
     {
         int index1, i, f = 0;
         cout << "\nENTER ID: ";
@@ -311,37 +311,37 @@ public:
         }
     }
 
-    Node *root = NULL; // initializing the root node here so that it doesn't have to be passed to all functions
+    Node *root = NULL;
 
-    void insertIntoTrie(int n) // inserts all contacts into the trie
+    void insertIntoTrie(int n)
     {
         root = new Node();
         for (int i = 0; i < n; i++)
         {
             transform(arr[i].name.begin(), arr[i].name.end(), arr[i].name.begin(), ::toupper);
-            insert_name(arr[i].name); // each contact is inserted into the trie one by one
+            insert_name(arr[i].name);
         }
     }
 
-    void insert_name(string s) // inserts a contact name in trie
+    void insert_name(string s)
     {
         int l = s.length();
-        Node *itr = root; // itr iterates through the trie nodes
+        Node *itr = root;
         for (int i = 0; i < l; i++)
         {
             Node *next = itr->child[s[i]];
             if (next == NULL)
             {
                 next = new Node();
-                itr->child[s[i]] = next; // inserts into the map if next node is not found
+                itr->child[s[i]] = next;
             }
             itr = next;
             if (i == (l - 1))
-                itr->isLast = true; // when the end of string is reached, the last ndoe is marked true
+                itr->isLast = true;
         }
     }
 
-    void display_query(string q) // displays suggestions for every character the user enters in string q
+    void display_query(string q)
     {
         int i;
         Node *prev = root;
@@ -359,8 +359,8 @@ public:
                 break;
             }
             cout << "\nNAMES STARTING WITH " << prefix << " are"
-                 << "\n";                         // if a suggested name is found
-            displayContactsUtil(curNode, prefix); // then the contact details are displayed by this function
+                 << "\n";
+            displayContactsUtil(curNode, prefix);
 
             prev = curNode;
         }
@@ -371,14 +371,11 @@ public:
         }
     }
 
-    void displayContactsUtil(Node *curNode, string prefix) // displays all the contact details with respect to prefix
+    void displayContactsUtil(Node *curNode, string prefix)
     {
         if (curNode->isLast)
             cout << prefix << endl;
 
-        // Find all the adjacent nodes to the current
-        // node and then call the function recursively
-        // This is similar to performing DFS on a graph
         for (char i = 'A'; i <= 'Z'; i++)
         {
             Node *nextNode = curNode->child[i];
@@ -418,14 +415,15 @@ int main()
     cout << "\n2: PREFIX SEARCH VIA NAME";
     cout << "\n3: PREFIX SEARCH VIA NUMBER";
     cout << "\n4: SEARCH RECORD";
-    cout << "\n5: DELETE RECORD";
-    cout << "\n6: UPDATE RECORD";
+    cout << "\n5: UPDATE RECORD";
+    cout << "\n6: DELETE RECORD";
 
     cout << "\n0: EXIT";
     while (true)
     {
-        cout << "\n\nEnter your choice ";
+        cout << "\n\nENTER CHOICE: ";
         cin >> ch;
+
         if (ch == 1)
             h.display_rec(size);
         if (ch == 2)
@@ -442,9 +440,9 @@ int main()
         if (ch == 4)
             h.search_id(size);
         if (ch == 5)
-            h.delete_rec(size);
-        if (ch == 6)
             h.update_rec(size);
+        if (ch == 6)
+            h.delete_rec(size);
 
         if (ch == 0)
             break;
