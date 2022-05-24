@@ -17,10 +17,10 @@ public:
     }
 
     friend class Node;
-    friend class phone_details;
+    friend class contact_details;
 };
 
-class Node // the unordered map to store the names using Node concept
+class Node
 {
     unordered_map<char, Node *> child;
     bool isLast;
@@ -38,11 +38,11 @@ public:
 
 class phone_details
 {
-    info arr[100]; // maximum size of the infoory is 100
+    info arr[100];
+    int i, index;
     string n;
     string t;
     string e;
-    int i, index;
 
 public:
     phone_details()
@@ -63,7 +63,7 @@ public:
 
         while (t.length() != 10)
         {
-            cout << "ENTER VALID NUMBER: ";
+            cout << "ENTER VALID NUMBER  :";
             cin >> t;
         }
 
@@ -79,7 +79,8 @@ public:
 
             if (x < 11)
             {
-                cout << "ENTER VALID GMAIL: ";
+                cout << "ENTER A" << endl
+                     << "ENTER GMAIL AGAIN:         " << endl;
 
                 continue;
             }
@@ -118,8 +119,8 @@ public:
 
                 else
                 {
-                    cout << "ENTER VALID GMAIL: ";
-                    break;
+                    cout << "INVALID GMAIL" << endl
+                         << "ENTER GMAIL AGAIN:         ";
 
                     flag = false;
                 }
@@ -154,7 +155,7 @@ public:
              << endl;
     }
 
-    void search_id(int size) // searches a particular contact on the basis of the id entered by the user
+    void search_id(int size)
     {
         int index1, i, f = 0;
         cout << "\nEnter the id to be searched: ";
@@ -164,10 +165,10 @@ public:
         {
             if (arr[index1].id == i)
             {
-                cout << "\nRecord found \n";
                 cout << "Name: " << arr[index1].name;
                 cout << "\nID: " << arr[index1].id;
                 cout << "\nContact number: " << arr[index1].telephone;
+                cout << "\nContact number: " << arr[index1].email;
                 f = 1;
                 break;
             }
@@ -222,32 +223,31 @@ public:
         cout << endl;
     }
 
-    void delete_rec(int size) // deletes the record whose id is entered by the user
-    {
-        int index1, i, f = 0;
-        cout << "\nEnter the id of the record to be deleted: ";
-        cin >> i;
-        index1 = i % size;
-        for (int k = 0; k < size; k++)
-        {
-            if (arr[index1].id == i)
-            {
-                cout << "\nRecord found and deleted successfully\n";
-                arr[index1].name = " ";
-                arr[index1].id = 0;
-                arr[index1].telephone = "";
-                arr[index1].email = "";
-                f = 1;
-                break;
-            }
-            else
-                index1 = (index1 + 1) % size;
-        }
-        if (f == 0)
-            cout << "\nRecord not found.";
-    }
+    // void delete_rec(int size) // deletes the record whose id is entered by the user
+    // {
+    //     int index1, i, f = 0;
+    //     cout << "\nEnter the id of the record to be deleted: ";
+    //     cin >> i;
+    //     index1 = i % size;
+    //     for (int k = 0; k < size; k++)
+    //     {
+    //         if (arr[index1].id == i)
+    //         {
+    //             cout << "\nRecord found and deleted successfully\n";
+    //             arr[index1].name = " ";
+    //             arr[index1].id = 0;
+    //             arr[index1].telephone = 0;
+    //             f = 1;
+    //             break;
+    //         }
+    //         else
+    //             index1 = (index1 + 1) % size;
+    //     }
+    //     if (f == 0)
+    //         cout << "\nRecord not found.";
+    // }
 
-    void update_rec(int size) // updates the record of the person whose id is entered by the user
+    void update_rec(int size)
     {
         int index1, i, f = 0;
         cout << "\nEnter the id of the record that needs to be updated: ";
@@ -269,7 +269,7 @@ public:
         {
             cout << "\nEnter name to be updated: ";
             cin >> n;
-            cout << "\nEnter telephone number: ";
+            cout << "\nEnter telephoneephone number: ";
             cin >> t;
             arr[index1].name = n;
             arr[index1].telephone = t;
@@ -281,49 +281,53 @@ public:
         }
     }
 
-    void display_rec(int size) // displays the social register
+    void display_rec(int size)
     {
-        cout << "\n\tID \tNAME \t\tCONTACT NUMBER";
+        cout << endl;
         for (int k = 0; k < size; k++)
         {
             if (arr[k].id != 0)
             {
-                cout << "\n\t" << arr[k].id << "\t" << arr[k].name << "\t\t" << arr[k].telephone;
+                cout << "NAME: " << arr[k].name << endl
+                     << "PHONE: " << arr[k].telephone << endl
+                     << "GMAIL: " << arr[k].email << endl;
+
+                cout << endl;
             }
         }
     }
 
-    Node *root = NULL; // initializing the root node here so that it doesn't have to be passed to all functions
+    Node *root = NULL;
 
-    void insertIntoTrie(int n) // inserts all contacts into the trie
+    void insertIntoTrie(int n)
     {
         root = new Node();
         for (int i = 0; i < n; i++)
         {
             transform(arr[i].name.begin(), arr[i].name.end(), arr[i].name.begin(), ::toupper);
-            insert_name(arr[i].name); // each contact is inserted into the trie one by one
+            insert_name(arr[i].name);
         }
     }
 
-    void insert_name(string s) // inserts a contact name in trie
+    void insert_name(string s)
     {
         int l = s.length();
-        Node *itr = root; // itr iterates through the trie nodes
+        Node *itr = root;
         for (int i = 0; i < l; i++)
         {
             Node *next = itr->child[s[i]];
             if (next == NULL)
             {
                 next = new Node();
-                itr->child[s[i]] = next; // inserts into the map if next node is not found
+                itr->child[s[i]] = next;
             }
             itr = next;
             if (i == (l - 1))
-                itr->isLast = true; // when the end of string is reached, the last ndoe is marked true
+                itr->isLast = true;
         }
     }
 
-    void display_query(string q) // displays suggestions for every character the user enters in string q
+    void display_query(string q)
     {
         int i;
         Node *prev = root;
@@ -340,9 +344,9 @@ public:
                 i++;
                 break;
             }
-            cout << "\nSuggestions based on " << prefix << " are"
-                 << "\n";                         // if a suggested name is found
-            displayContactsUtil(curNode, prefix); // then the contact details are displayed by this function
+            cout << "\nNames starting with " << prefix << " are: "
+                 << "\n";
+            displayContactsUtil(curNode, prefix);
 
             prev = curNode;
         }
@@ -353,14 +357,11 @@ public:
         }
     }
 
-    void displayContactsUtil(Node *curNode, string prefix) // displays all the contact details with respect to prefix
+    void displayContactsUtil(Node *curNode, string prefix)
     {
         if (curNode->isLast)
             cout << prefix << endl;
 
-        // Find all the adjacent nodes to the current
-        // node and then call the function recursively
-        // This is similar to performing DFS on a graph
         for (char i = 'A'; i <= 'Z'; i++)
         {
             Node *nextNode = curNode->child[i];
@@ -388,13 +389,17 @@ int main()
     phone_details h;
 
     cout << endl
-         << endl
-         << "ENTER NUMBER OF CONTACTS: ";
+         << endl;
+
+    cout << "ENTER NUMBER OF CONTACTS: ";
     cin >> size;
     for (int k = 0; k < size; k++)
     {
         h.create(size);
     }
+
+    cout << "ENTER NUMBER AS REQUIRED: ";
+
     cout
         << "\n1: DISPLAY ALL RECORDS";
     cout << "\n2: PREFIX SEARCH VIA NAME";
@@ -410,6 +415,11 @@ int main()
         cin >> ch;
         if (ch == 1)
             h.display_rec(size);
+        if (ch == 3)
+        {
+            h.search_phone(size);
+        }
+
         if (ch == 2)
         {
             cout << "\nENTER NAME PREFIX: ";
@@ -418,11 +428,6 @@ int main()
             h.insertIntoTrie(size);
             h.display_query(query);
         }
-        if (ch == 3)
-        {
-            h.search_phone(size);
-        }
-
         if (ch == 4)
             h.search_id(size);
         // if (ch == 5)
