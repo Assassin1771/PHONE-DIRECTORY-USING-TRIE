@@ -154,20 +154,20 @@ public:
              << endl;
     }
 
-    void search_id(int size) // searches a particular contact on the basis of the id entered by the user
+    void search_id(int size)
     {
         int index1, i, f = 0;
-        cout << "\nEnter the id to be searched: ";
+        cout << "\nENTER ID: ";
         cin >> i;
         index1 = i % size;
         for (int k = 0; k < size; k++)
         {
             if (arr[index1].id == i)
             {
-                cout << "\nRecord found \n";
-                cout << "Name: " << arr[index1].name;
                 cout << "\nID: " << arr[index1].id;
-                cout << "\nContact number: " << arr[index1].telephone;
+                cout << "\nNAME: " << arr[index1].name;
+                cout << "\nPHONE: " << arr[index1].telephone;
+                cout << "\nGMAIL: " << arr[index1].email;
                 f = 1;
                 break;
             }
@@ -175,7 +175,10 @@ public:
                 index1 = (index1 + 1) % size;
         }
         if (f == 0)
-            cout << "Record not found\n";
+            cout << "NOT FOUND!!\n";
+
+        cout << endl
+             << endl;
     }
 
     void search_phone(int size)
@@ -185,6 +188,8 @@ public:
         string prefix;
         cout << "\nENTER PHONE PREFIX: " << endl;
         cin >> prefix;
+
+        cout << endl;
 
         // cout << prefix << endl;
 
@@ -207,17 +212,19 @@ public:
 
             if (count == prefix.length())
             {
-                cout << "Name: " << arr[k].name;
-                cout << "\nID: " << arr[k].id;
-                cout << "\nContact number: " << arr[k].telephone;
-                cout << "\nContact number: " << arr[k].email;
+                cout << "NAME: " << arr[k].name;
+                cout << "\nPHONE: " << arr[k].telephone;
+                cout << "\nGMAIL: " << arr[k].email;
                 f = 1;
             }
 
             count = 0;
+
+            cout << endl
+                 << endl;
         }
         if (f == 0)
-            cout << "Record not found\n";
+            cout << "NOT FOUND!!\n";
 
         cout << endl;
     }
@@ -225,14 +232,15 @@ public:
     void delete_rec(int size) // deletes the record whose id is entered by the user
     {
         int index1, i, f = 0;
-        cout << "\nEnter the id of the record to be deleted: ";
+        cout << "\nENTER ID: ";
         cin >> i;
+        cout << endl;
         index1 = i % size;
         for (int k = 0; k < size; k++)
         {
             if (arr[index1].id == i)
             {
-                cout << "\nRecord found and deleted successfully\n";
+                cout << "\nDELETED!!\n";
                 arr[index1].name = " ";
                 arr[index1].id = 0;
                 arr[index1].telephone = "";
@@ -244,14 +252,16 @@ public:
                 index1 = (index1 + 1) % size;
         }
         if (f == 0)
-            cout << "\nRecord not found.";
+            cout << "\nNOT FOUND!!";
     }
 
-    void update_rec(int size) // updates the record of the person whose id is entered by the user
+    void update_rec(int size)
     {
         int index1, i, f = 0;
-        cout << "\nEnter the id of the record that needs to be updated: ";
+        cout << "\nENTER ID: ";
         cin >> i;
+
+        cout << endl;
         index1 = i % size;
         for (int k = 0; k < size; k++)
         {
@@ -267,28 +277,36 @@ public:
         }
         if (f == 1)
         {
-            cout << "\nEnter name to be updated: ";
+            cout << "\nENTER NEW NAME: ";
             cin >> n;
-            cout << "\nEnter telephone number: ";
+            cout << "\nENTER NEW TELEPHONE: ";
             cin >> t;
+            cout << "\nENTER NEW GMAIL: ";
+            cin >> e;
             arr[index1].name = n;
             arr[index1].telephone = t;
-            cout << "\nDetails updated";
+            arr[index1].email = e;
+            cout << endl;
+            cout << "\nUPDATED!!";
         }
         else
         {
-            cout << "\nRecord not found";
+            cout << "\nNOT FOUND!!";
         }
     }
 
-    void display_rec(int size) // displays the social register
+    void display_rec(int size)
     {
-        cout << "\n\tID \tNAME \t\tCONTACT NUMBER";
+        cout << endl;
         for (int k = 0; k < size; k++)
         {
             if (arr[k].id != 0)
             {
-                cout << "\n\t" << arr[k].id << "\t" << arr[k].name << "\t\t" << arr[k].telephone;
+                cout << "NAME: " << arr[k].name << endl
+                     << "PHONE: " << arr[k].telephone << endl
+                     << "GMAIL: " << arr[k].email << endl;
+
+                cout << endl;
             }
         }
     }
@@ -340,7 +358,7 @@ public:
                 i++;
                 break;
             }
-            cout << "\nSuggestions based on " << prefix << " are"
+            cout << "\nNAMES STARTING WITH " << prefix << " are"
                  << "\n";                         // if a suggested name is found
             displayContactsUtil(curNode, prefix); // then the contact details are displayed by this function
 
@@ -419,14 +437,12 @@ int main()
             h.display_query(query);
         }
         if (ch == 3)
-        {
             h.search_phone(size);
-        }
 
         if (ch == 4)
             h.search_id(size);
-        // if (ch == 5)
-        //     h.delete_rec(size);
+        if (ch == 5)
+            h.delete_rec(size);
         if (ch == 6)
             h.update_rec(size);
 
